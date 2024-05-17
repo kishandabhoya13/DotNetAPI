@@ -1,0 +1,152 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+@model Assignment.Models.Dto.StudentDataModelDto
+<div id="AddEditStudentModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Form</h5>
+                <button type="button"
+                        class="btn-close btn-close-custom"
+                        data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UpsertStudentData" asp-controller="Student" method="post">
+                    <input type="hidden" asp-for="StudentId" />
+                    <div class="row">
+                        <div class="col-md-6 col-6 search-records-dropdown-div mb-3">
+                            <div class="form-group form-floating">
+                                <input type="text"
+                                       class="form-control"
+                                       id="floatingfirstname"
+                                       asp-for="FirstName"
+                                       placeholder="First Name" />
+                                <label for="floatingzipcode">First Name</label>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-6 search-records-dropdown-div mb-3">
+                            <div class="form-group form-floating">
+                                <input type="text"
+                                       class="form-control"
+                                       asp-for="LastName"
+                                       id="floatinglastname"
+                                       placeholder="Last Name" />
+                                <label for="floatingzipcode">Last Name</label>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-6 search-records-dropdown-div mb-3">
+                            <div class="form-group form-floating">
+                                <input type="email"
+                                       class="form-control"
+                                       id="floatingemail"
+                                       asp-for="Email"
+                                       placeholder="Email" />
+                                <label for="floatingemail">Email</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-12">
+                            <div class="form-group form-floating">
+                                <input type="date"
+                                       class="form-control"
+                                       asp-for="DateOfBirth"
+                                       id="floatingdateofbirth" />
+                                <label for="floatingdateofbirth">Date of Birth</label>
+                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-12 col-sm-12 mb-4">
+                            <div class="d-flex w-100 gap-2">
+                                Gender :
+                                @foreach (var item in Model.genders)
+                                {
+                                    <input asp-for="Gender" type="radio" value="@item.Id" /> @item.Name
+                                }
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 col-12 col-sm-12 mb-4">
+                            <div class="my-profile-input_box">
+                                <select id="send-order-region-dropdown"
+                                        asp-for="Grade"
+                                        class="form-control change2">
+                                    <option class="send-order-options" value="">Grade</option>
+                                    <option class="send-order-options" value="1">1st-3rd</option>
+                                    <option class="send-order-options" value="2">4th-6th</option>
+                                    <option class="send-order-options" value="3">7th-8th</option>
+                                    <option class="send-order-options" value="4">9th-12th</option>
+
+
+                                </select>
+                                <i class="fa fa-angle-down"
+                                   id="send-order-dropdownarrow"></i>
+                            </div>
+                            <span class="text-danger mt-2" asp-validation-for="Grade"></span>
+                        </div>
+                        <div class="col-md-6 col-12 col-sm-12 mb-4">
+                            <div class="form-group form-floating">
+                                <input type="text"
+                                       class="form-control"
+                                       id="CourseName"
+                                       asp-for="Course"
+                                       placeholder="CourseName" />
+                                <label for="CourseName">CourseName</label>
+                                <span asp-validation-for="Course" class="text-danger"></span>
+
+                            </div>
+                            @*<div class="my-profile-input_box">
+                            <label for="send-order-region-dropdown"
+                            class="floating-label">Courses</label>
+                            <select id="send-order-region-dropdown"
+                            asp-for="CourseId"
+                            class="form-control change2">
+                            <option class="send-order-options" value="">Course</option>
+                            @foreach (var course in Model.Courses)
+                            {
+                            <option class="send-order-options" value="@course.Id">@course.Name</option>
+
+                            }
+                            </select>
+                            <i class="fa fa-angle-down"
+                            id="send-order-dropdownarrow"></i>
+                            </div>*@
+
+                        </div>
+                        <div class="save-cancel-btns mb-3 me-3 w-100">
+                            <button class="btn cancel-btn shadow" data-bs-dismiss="modal" type="button">
+                                Cancel
+                            </button>
+                            <button class="btn save-btn shadow" type="submit">Save</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    const inputElements = document.querySelectorAll('input#floatingdateofbirth');
+    if (inputElements != null) {
+        const maxDate = new Date();
+        console.log(maxDate);
+        maxDate.setFullYear(maxDate.getFullYear());
+
+        for (const inputElement of inputElements) {
+            inputElement.setAttribute('max', maxDate.toISOString().split('T')[0]);
+        }
+    }
+</script>

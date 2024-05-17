@@ -1,0 +1,150 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    int startIndex = (Model.PageNumber - 1) * Model.PageSize+ 1;
+    int endIndex = Math.Min(Model.PageNumber * Model.PageSize, Model.TotalItems);
+}
+
+@model Assignment.Models.Dto.StudentDataSecondDTO
+<input type="hidden" id="inputSearchQuery" value="@Model.searchQuery" name="searchQuery" />
+<input type="hidden" id="inputPageNumber" value="@Model.PageNumber" name="pageNumber" />
+<div class="table-div table-responsive">
+    <table class="table w-100" id="studentTable">
+        <thead>
+            <tr>
+                <td>Student ID</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Email</td>
+                <td>Age</td>
+                <td>Gender</td>
+                <td>Course</td>
+                <td>Grade</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Students.Count > 0)
+            {
+                @foreach (var data in Model.Students)
+                {
+                    <tr>
+                        <td>@data.StudentId</td>
+                        <td>@data.FirstName</td>
+                        <td>@data.LastName</td>
+                        <td>@data.Email</td>
+                        <td>@data.Age</td>
+                        <td>@data.GenderName</td>
+                        <td>@data.Course</td>
+                        <td>@data.GradeName</td>
+                        <td>
+                            <button class="edit-btn" onclick="addEditStudentModal(@data.StudentId)">
+                                Edit
+                            </button>
+                            <button class="delete-btn" onclick="location.href='@Url.Action("DeleteRecord","Student",new{id = data.StudentId})'">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr>No Records Found</tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.Students.Count > 0)
+{
+    @foreach (var data in Model.Students)
+    {
+        <div class="table-btn-div mb-3">
+            <button class="table-btn"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#a-@data.StudentId">
+                <div class="table-btn-inner-div">
+                    <div class="inner-left-div">
+                        <span>@data.FirstName</span>
+                        <span>@data.LastName</span>
+                    </div>
+                </div>
+            </button>
+            <div id="a-@data.StudentId" class="collapse collapse1">
+                <div class="table-div-content p-3">
+                    <div class="d-flex gap-2 pb-2 content-div">
+                        <span>Email:</span>
+                        <span>@data.Email</span>
+                    </div>
+                    <div class="d-flex gap-2 pb-2 content-div">
+                        <span>Age: </span>
+                        <span>@data.Age</span>
+                    </div>
+
+                    <div class="d-flex gap-2 pb-2 content-div">
+                        <span>Gender:</span>
+                        <span>@data.GenderName</span>
+                    </div>
+                    <div class="d-flex gap-2 pb-2 content-div">
+                        <span>
+                            Course: @data.Course
+                        </span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="edit-btn" onclick="addEditStudentModal(@data.StudentId)">
+                        Edit
+                    </button>
+                    <button class="delete-btn" onclick="location.href='@Url.Action("DeleteRecord","Student",new{id = data.StudentId})'">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+<nav aria-label="Page navigation example" class="pb-1 page-navigation ms-3">
+
+    <span>Item per Pages :</span>
+    <Select id="PageSizeDropdown" onchange="fetchStudents(1)"
+            asp-for="ItemsPerPage"
+            class="form-control page-size-dropdown">
+        <option value="3">3</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+    </Select>
+
+    @if (Model.TotalItems == 0)
+    {
+        <div class="page-item d-lg-none d-md-none d-sm-block d-block">
+            <span class="page-link">
+                Showing 0 - 0 of 0
+            </span>
+        </div>
+    }
+    else
+    {
+        <div class="page-item d-lg-none d-md-none d-sm-block d-block">
+            <span class="page-link">
+                Showing @startIndex - @endIndex of @Model.TotalItems
+            </span>
+        </div>
+    }
+    <ul class="pagination">
+        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+            <button class="page-link" type="button" id="prevPageLink" onclick="fetchStudents(@Model.PageNumber - 1)"><i class="fa fa-angle-left"></i></button>
+        </li>
+        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+            <button class="page-link" type="button" id="nextPageLink" onclick="fetchStudents(@Model.PageNumber + 1)"><i class="fa fa-angle-right"></i></button>
+        </li>
+    </ul>
+</nav>
+

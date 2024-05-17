@@ -1,0 +1,207 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.main-content{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.main-content-inner-div{
+    width:80%;
+}
+
+.student-header {
+    width: 100%;
+    background-color: #795f4a;
+    color: white;
+    height: 50px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-stundet-btn {
+    height: 30px;
+    width: auto;
+    border:none;
+    border-radius:5px;
+    background-color: white;
+    color: #795f4a;
+}
+
+.btn-div{
+    display:flex;
+    justify-content:end;
+    width:40%;
+}
+.text-div {
+    font-weight:bold;
+    font-size:18px;
+    display: flex;
+    justify-content: end;
+    width: 60%;
+}
+
+.input_box{
+    height:50px;
+}
+
+#inputsearch{
+    height:100%;
+}
+
+.edit-btn {
+    background-color: #795f4a;
+    color: white;
+    border: none;
+    width: auto;
+    height:40px;
+    border-radius: 5px;
+}
+
+.delete-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    width: auto;
+    height: 40px;
+    border-radius: 5px;
+}
+
+#studentTable thead tr td{
+    font-weight:bold;
+    vertical-align:middle;
+}
+
+
+#studentTable tbody tr td {
+    vertical-align: middle;
+}
+
+.modal-header {
+    background-color: #795f4a;
+    color:white;
+    text-align:center;
+}
+
+.save-cancel-btns {
+    width:100%;
+    gap:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.cancel-btn{
+    background-color:white;
+    color:black;
+    width:40%;
+}
+
+.save-btn {
+    background-color: #0e5197;
+    width: 40%;
+    color:white;
+}
+
+.my-profile-input_box {
+    position: relative;
+    width: 100%;
+    background-color: var(--bkg-color) !important;
+    height: 50px;
+    margin-bottom:20px;
+}
+#send-order-dropdownarrow {
+    position: absolute;
+    right: 12px !important;
+    bottom: 15px;
+}
+.page-size-dropdown{
+    width:50px;
+    height:40px;
+}
+.page-navigation{
+    display:flex;
+    justify-content:end;
+    gap:20px;
+    align-items:center;
+}
+.pagination{
+    margin-bottom:0px !important;
+    gap:10px;
+}
+
+table tbody tr td:not(:last-child){
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+}
+.table-btn-div{
+    display:none;
+}
+
+.form-group:focus {
+    border-color: #00bbe8;
+    box-shadow: 0 0px 0px white, 0 0 8px white;
+}
+.form-control{
+    height:50px !important;
+}
+.form-control:focus {
+    background-color: transparent;
+    border-color: #0e5197;
+    box-shadow: 0 0px 0px white, 0 0 8px white;
+}
+@media screen and (max-width: 767px) {
+    .table-div {
+        display: none;
+    }
+    .table-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #ebfafd;
+        border: 1px solid #ebfafd;
+        height: fit-content;
+        padding-left: 15px;
+        gap: 10px;
+    }
+    .table-btn-div {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #ebfafd;
+        border: 1px solid #ebfafd;
+        height: fit-content;
+        padding-left: 15px;
+        gap: 10px;
+    }
+
+    .table-btn-inner-div {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
