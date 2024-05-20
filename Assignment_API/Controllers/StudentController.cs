@@ -1,5 +1,4 @@
-﻿using Assignment_API.DataContext;
-using Assignment_API.DataModals;
+﻿using Assignment_API.DataModals;
 using Assignment_API.Models;
 using Assignment_API.Models.Dto;
 using Assignment_API.Repository.Interface;
@@ -7,7 +6,6 @@ using AutoMapper;
 using LinqKit;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Net;
 
@@ -17,42 +15,19 @@ namespace Assignment_API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private ILogger<StudentController> _logger;
         private readonly IStudentRepository _studentRepository;
         private readonly ICourseRepository _courseRepository;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         protected APIResponse _response;
-        public StudentController(ILogger<StudentController> logger,
+        public StudentController(
             ICourseRepository courseRepository, IStudentRepository studentRepository,
             IMapper mapper)
         {
-            _logger = logger;
             _courseRepository = courseRepository;
             _studentRepository = studentRepository;
             _mapper = mapper;
             this._response = new();
         }
-
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<ActionResult<APIResponse>> GetStudentsData()
-        //{
-        //    try
-        //    {
-
-        //        IEnumerable<Student> students = await _studentRepository.GetAll();
-        //        _response.result = _mapper.Map<List<StudentDataModelDto>>(students);
-        //        _response.StatusCode = HttpStatusCode.OK;
-        //        _logger.LogInformation("All Student Data");
-        //        return Ok(_response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.ErroMessages = new List<string>() { ex.ToString() };
-        //    }
-        //    return _response;
-        //}
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
@@ -60,7 +35,7 @@ namespace Assignment_API.Controllers
         {
             try
             {
-                Expression<Func<Student,bool>> whereCluaseSntex = PredicateBuilder.New<Student>();
+                Expression<Func<Student, bool>> whereCluaseSntex = PredicateBuilder.New<Student>();
                 if (paginationDTO.searchQuery != null)
                 {
                     whereCluaseSntex = x => x.FirstName.ToLower().Contains(paginationDTO.searchQuery) || x.LastName.ToLower().Contains(paginationDTO.searchQuery);
@@ -82,7 +57,7 @@ namespace Assignment_API.Controllers
                     GradeName = x.Grade == 1 ? "1st-3rd" : x.Grade == 2 ? "4th-6th" : x.Grade == 3 ? "7th-8th" : "9th-12th",
                     GenderName = x.Gender == 1 ? "Male" : x.Gender == 2 ? "Female" : "Other",
                     LastName = x.LastName,
-                }, whereCluaseSntex, paginationDTO.PageNumber, paginationDTO.PageSize, x=>x.StudentId, paginationDTO.isAcending);
+                }, whereCluaseSntex, paginationDTO.PageNumber, paginationDTO.PageSize, x => x.StudentId, paginationDTO.isAcending);
                 List<StudentDataModelDto> students = new List<StudentDataModelDto>();
                 foreach (StudentDataModelDto item in dataTable)
                 {
@@ -319,14 +294,14 @@ namespace Assignment_API.Controllers
         public async Task<IActionResult> UpdatePartialStudentDetails(int id, JsonPatchDocument<StudentUpdateDto> patchDto)
         {
             if (id == 0 || patchDto == null)
-            {   
+            {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 return BadRequest();
             }
 
             var student = await _studentRepository.GetFirstOfDefault(x => x.StudentId == id);
             if (student == null)
-            {   
+            {
                 _response.StatusCode = HttpStatusCode.NotFound;
                 return NotFound();
             }
@@ -353,7 +328,6 @@ namespace Assignment_API.Controllers
                 Gender = studentDataModelDto.GenderId,
                 Grade = studentDataModelDto.GradeId
             };
-
             Course? course = await _courseRepository.GetFirstOfDefault(x => x.Name == studentDataModelDto.CourseName);
             if (course != null)
             {
@@ -373,31 +347,5 @@ namespace Assignment_API.Controllers
             _ = _studentRepository.Update(student1);
             return NoContent();
         }
-
-        //public async Task<ActionResult<List<CourseModelDTO>>> GetAllCourses()
-        //{
-        //    List<Course> courses = await _courseRepository.GetAll();
-        //    _logger.LogInformation("All Courses");
-        //    return Ok(_mapper.Map<List<CourseModelDTO>>(courses));
-        //}
-
-        //[HttpGet("{id:int}", Name = "GetCourse")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult<StudentDataModelDto>> GetCourse(int id)
-        //{
-
-        //    if (id == 0)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var course = await _courseRepository.GetFirstOfDefault(x => x.Id == id);
-        //    if (course == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(course);
-        //}
     }
 }
